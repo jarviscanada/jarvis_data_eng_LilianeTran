@@ -6,8 +6,7 @@ db_username=$2
 db_password=$3
 
 # Start docker
-# Make sure you understand the double pipe operator
-sudo systemctl status docker || systemctl #todo
+sudo systemctl status docker || systemctl start docker
 
 # Check container status (try the following cmds on terminal)
 docker container inspect jrvs-psql
@@ -30,17 +29,19 @@ case $cmd in
   fi
   
   # Create container
-	docker volume #todo
+	docker volume create pgdata
   # Start the container
-	docker run #todo
+	docker run --name jrvs-psql -e POSTGRES_PASSWORD=$PGPASSWORD  -d -v pgdata:/var/lib/postgresql/data -p 5432:5432 postgres:9.6-alpine
   # Make sure you understand what's `$?`
 	exit $?
 	;;
 
   start|stop) 
   # Check instance status; exit 1 if container has not been created
-  if [ $container_status # ... todo
-  # ... todo
+  if [ $container_status -eq 1 ]; then
+	  echo 'Container does not exist'
+	  exit 1
+  fi
 
   # Start or stop the container
 	docker container $cmd jrvs-psql
