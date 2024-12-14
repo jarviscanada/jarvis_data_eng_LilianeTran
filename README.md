@@ -31,4 +31,36 @@ crontab -e
 cat /tmp/host_usage.log
 ```
 
+# Implementation
+The project is implemented on a Linux VM with Rocky Linux distro. Docker was used to contain the PSQL instance and several bash scripts were created to automate the creation of the PSQL database. For the *host_usage.sh* who collects the usage specs, it was important to automate the data collection by using the *crontab* which is a tool that Linux has.
 
+
+## Architecture
+
+
+## Scripts
+- psql_docker.sh: 
+This script is used to automate the Docker container. If the container is stopped, it will start it. 
+
+- host_info.sh:
+This script is used to automate the fetching of data with the command `lscpu`. It is then added to the table *host_info.sh*.
+
+- host_usage.sh
+This script is used to automate the fetching of usage data with the command `vmstat`. The collected usage data is added to the table *host_usage.sh*.
+
+- crontab
+This script is used to automate the fetching of usage data. It is run every minute and if any errors are encountered, it is added to the /tmp/host_usage.log.
+
+- queries.sql
+
+## Database Modelling
+
+
+# Test
+The files were tested with logs. If any errors were detected, the program will exit with an error code. In any steps, bash commands were verified to ensure that no mistakes were made. For example, to make sure the table host_usage had the information inserted properly, the command ```SELECT * FROM host_usage``` was done and the results were printed on the terminal.
+
+# Deployment
+This project was deployed on GitHub to ensure good version control and practices. To also make sure that the environment is well managed, Docker was used. From there, the PSQL instance was pulled directly from their image library to get the newest version of it.  
+
+# Improvements
+Several improvements could be done, such as 
