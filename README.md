@@ -36,7 +36,7 @@ The project is implemented on a Linux VM with Rocky Linux distro. Docker was use
 
 
 ## Architecture
-![Cluster Diagram of the Project with three Linux hosts, a Database and agents](/assets/images/clusterDiagram.svg)
+![Cluster Diagram of the Project with three Linux hosts, a Database and agents](assets/clusterDiagram.svg)
 
 ## Scripts
 - psql_docker.sh: 
@@ -52,6 +52,7 @@ This script is used to automate the fetching of usage data with the command `vms
 This script is used to automate the fetching of usage data. It is run every minute and if any errors are encountered, it is added to the /tmp/host_usage.log.
 
 - queries.sql
+A business problem that could be resolve with this file would be to monitor and optimize the resource utilization but also its host performance. These queries would track all the informations needed in the database and give us better metrics to understand what needs to be refactored. An ongoing data collection allows better understanding of the potential issues that could arise, but also fix before it happens.
 
 ## Database Modelling
 
@@ -86,4 +87,4 @@ The files were tested with logs. If any errors were detected, the program will e
 This project was deployed on GitHub to ensure good version control and practices. To also make sure that the environment is well managed, Docker was used. From there, the PSQL instance was pulled directly from their image library to get the newest version of it.  
 
 # Improvements
-Several improvements could be done, such as 
+Several improvements could be done, such as ensuring that all the hardwares are updated properly to collect the most recent data possible. Also, alerts could be sent to the user to warn of excessive usage of the host. It could also be more interesting having more data for the host_info and doing something with that data as well.
