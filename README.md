@@ -36,7 +36,7 @@ The project is implemented on a Linux VM with Rocky Linux distro. Docker was use
 
 
 ## Architecture
-
+![Cluster Diagram of the Project with three Linux hosts, a Database and agents](/assets/images/clusterDiagram.svg)
 
 ## Scripts
 - psql_docker.sh: 
@@ -55,6 +55,29 @@ This script is used to automate the fetching of usage data. It is run every minu
 
 ## Database Modelling
 
+Table *host_info* :
+| Column Name | Data Type | Nullable | Constraints | Description |
+| --- | --- | --- | ---| --- |
+| id | SERIAL | NO | PRIMARY KEY | Unique identifier for each information |
+| hostname | VARCHAR | NO | UNIQUE | Hostname for the machine |
+| cpu_number | INT2 | NO | | Number of CPU cores |
+| cpu_architecture | VARCHAR | NO |  | CPU architecture |
+| cpu_model | VARCHAR | NO | | Model name for the CPU |
+| cpu_mhz | FLOAT8 | NO | | CPU clock speed in MHz |
+| l2_cache | INT4 | NO | | Size of the L2 cache in KB |
+| timestamp | TIMESTAMP | YES | | Timestamp when the record was created |
+| total_mem | INT4 | YES | | Total memory available on the host (in KB) |
+
+Table *host_usage* :
+| Column Name | Data Type | Nullable | Constraints | Description |
+| --- | --- | --- | ---| --- |
+| timestamp | TIMESTAMP | NO | | Timestamp for the recorded usage data |
+| host_id | SERIAL | NO | FOREIGN KEY REFERENCES *host_info(id)* | Identifier linking to the host in *host_info* |
+| memory_free | INT4 | NO |  | Amount of free memory on the host (in KB) |
+| cpu_idle | INT2 | NO | | Percentage of CPU time spent idle |
+| cpu_kernel | INT2 | NO | | Percentage of CPU time spent in kernel mode |
+| disk_io | INT4 | NO | | Disk I/O operations performed |
+| disk_available | INT4 | NO | | 	Available disk space on the host (in KB) |
 
 # Test
 The files were tested with logs. If any errors were detected, the program will exit with an error code. In any steps, bash commands were verified to ensure that no mistakes were made. For example, to make sure the table host_usage had the information inserted properly, the command ```SELECT * FROM host_usage``` was done and the results were printed on the terminal.
